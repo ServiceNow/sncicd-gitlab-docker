@@ -1,0 +1,117 @@
+stages:
+  - apply
+  - publish
+  - install
+  - installplugin
+  - test
+  - rollbackapp
+  - rollbackplugin
+
+variables:
+  TESTSTATE: "not run"
+  SN_AUTH_DEV: $(K8S_SECRET_SN_AUTH_DEV)
+  SN_AUTH_PROD: $(K8S_SECRET_SN_AUTH_PROD)
+  DOTENV_FILE: "$CI_PROJECT_DIR/build.env"
+
+image: amalyi/gltst:latest
+
+SCApply:
+  stage: apply
+  variables:
+    task: SCApply
+    SNOWINSTANCE: "cicdgitlabappauthor.service-now.com"
+    SNOWAUTH: $SN_AUTH_DEV
+    APP_SCOPE: "x_sofse_cicd_gitla"
+  script:
+    - task.sh
+  when: manual
+AppPublish:
+  stage: publish
+  variables:
+    task: AppPublish
+    SNOWINSTANCE: "cicdgitlabappauthor.service-now.com"
+    SNOWAUTH: $SN_AUTH_DEV
+    SCOPE: "x_sofse_cicd_gitla"
+    VERSIONFORMAT: "autodetect"
+    DEVNOTES: "Updated version"
+  artifacts:
+    reports:
+      dotenv: $DOTENV_FILE
+  script:
+    - task.sh
+AppInstall:
+  stage: install
+  variables:
+    task: AppInstall
+    SNOWINSTANCE: "cicdgitlabappclient.service-now.com"
+    SNOWAUTH: $SN_AUTH_PROD
+    SCOPE: "x_sofse_cicd_gitla"
+    VERSION: $PUBLISHVERSION
+  artifacts:
+    reports:
+      dotenv: $DOTENV_FILE
+  script:
+    - task.sh
+installPlugin:
+  stage: installplugin
+  variables:
+    task: PluginActivate
+    SNOWINSTANCE: "cicdgitlabappclient.service-now.com"
+    SNOWAUTH: $SN_AUTH_PROD
+    PLUGINID: "com.servicenow_now_calendar"
+  script:
+    - task.sh
+
+testsuccess:
+  stage: test
+  variables:
+    task: TestRun
+    SNOWINSTANCE: "cicdgitlabappclient.service-now.com"
+    SNOWAUTH: $SN_AUTH_PROD
+    TEST_SUITE_SYS_ID: "0a383a65532023008cd9ddeeff7b1258"
+  script:
+    - echo 'TESTSTATE=started' >> $DOTENV_FILE
+    - task.sh
+  artifacts:
+    reports:
+      dotenv: $DOTENV_FILE
+testfail:
+  stage: test
+  variables:
+    task: TestRun
+    SNOWINSTANCE: "cicdgitlabappclient.service-now.com"
+    SNOWAUTH: $SN_AUTH_PROD
+    TEST_SUITE_SYS_ID: "d24c05f01bd31c506ce4a82b234bcbf6"
+  script:
+    - echo 'TESTSTATE=started' >> $DOTENV_FILE
+    - task.sh
+  artifacts:
+    reports:
+      dotenv: $DOTENV_FILE
+
+PluginRollback:
+  stage: rollbackplugin
+  variables:
+    task: PluginRollback
+    SNOWINSTANCE: "cicdgitlabappclient.service-now.com"
+    SNOWAUTH: $SN_AUTH_PROD
+    PLUGINID: "com.servicenow_now_calendar"
+  script:
+    - "[[ \"$TESTSTATE\" == \"started\" ]] && task.sh; echo Done"
+  when: on_failure
+AppRollback:
+  stage: rollbackapp
+  variables:
+    task: AppRollback
+    SNOWINSTANCE: "cicdgitlabappclient.service-now.com"
+    SNOWAUTH: $SN_AUTH_PROD
+    SCOPE: "x_sofse_cicd_gitla"
+    ROLLBACKVERSION: $(rollbackVersion)
+  script:
+    - echo $TESTSTATE
+    - echo $rollbackVersion
+    - "[[ \"$TESTSTATE\" == \"started\" ]] && task.sh; echo Done"
+  when: on_failure
+
+
+ 
