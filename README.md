@@ -3,10 +3,8 @@
 ## Contents
 
 - [Intro](#intro)
-- [Installation](#installation)
-- [Tests](#tests)
-- [Build](#build)
-- [Integration](#Integration)
+- [Docker](#Docker)
+- [Usage](#usage)
 - [API Docs](#api-docs)
 - [List of tasks](#tasks)
 
@@ -14,57 +12,22 @@
 
 ## Intro
 
-Here you can find the sourcecode of ServiceNow's extension for the Azure Devops pipelines.
-This extension covers only CI/CD subset of ServiceNow REST API and it aims to help people integrate both Continues Integration and Continues Delivery into Azure pipelines infrastructure.
+Here you can find the sourcecode of ServiceNow's extension for the Gitlab CI pipelines.
+This extension covers only CI/CD subset of ServiceNow REST API and it aims to help people integrate both Continues Integration and Continues Delivery into Gitlab pipelines infrastructure.
 
-## Installation
+## Docker
+
+Before pushing the image onto Docker hub make sure you have done the login command to link it with your Docker hub account: `docker login` 
+
 ```shell script
-git clone git@github.com:antonmalyi/cicdplugin.git
-cd cicdplugin
-npm install
+export DOCKER_IMAGE_NAME=[your docker image name here]
+docker build -t  $DOCKER_IMAGE_NAME.
+docker push $DOCKER_IMAGE_NAME:latest
 ```
 
-### Requirements
-- nodejs ver >=8.0
-### DevDependecies
-- [jest](https://github.com/facebook/jest)
-### Dependencies
-- [archiver](https://github.com/archiverjs/node-archiver)
-- [fs-extra](https://github.com/jprichardson/node-fs-extra)
+## Usage
 
-## Tests
-
-Project contains the [tests](tests/) folder. Inside are two files with mocks - [pipeline.js](tests/pipeline.js) and [transport.js](tests/transport.js) - pipeline emulates the AzureDevops pipeline inputs and variables, and transport have a mock for a ServiceNow API calls, it consumes the jsons generated from real server responses. The third file in the root of tests is [integration.test.js](tests/integration.test.js). This one emulates the whole pipeline's inputs from ADO and works as a pipeline itself, sending the requests for real ServiceNow server. The integration tests is required before building the extension artifact.
-
-The tests folder contains also subfolders with tests and mock-data jsons. These are the unit tests for existing endpoints and for correct error processing like 404s.
-
-Tests should be ran via npm commands:
-
-#### Unit tests
-```shell script
-npm run test
-```   
-
-#### Integration test
-```shell script
-npm run integration
-```   
-
-> Nota Bene. For some reasons the Rollback Plugin task sometimes fails on the ServiceNow instances despite of Plugin Activate success. You can try to run test again and get green status. Also, the Apply Changes task is now commented due to existing difference between API and interface processing at ServiceNow. Please, check this later. 
-
-## Build
-
-```shell script
-npm run buid
-```
-
-This command will check the latest version among all the tasks jsons an extension' manifest file, update every one with the latest, copy all necessary files and folders into folder 'out' and generate the .vsix file with name `servicenow.extension.x.y.z.vsix` where x.y.z is the current version of extension. This file is ready to upload into the marketplace.
-
-File [extension.vsixmanifest](src/extension/extension.vsixmanifest) contains the info about Extension, it's publisher, version, name and description. If you start a **fork** - make sure you have changed this to corresponding publisher and dropped the version to 1.0.0 here and in every `task.json` file. 
-
-## Integration
-
-This project contains [azure-pipeline.yml](azure-pipelines.yml) file - when this repository added into ADO as a pipeline source, it will automatically create a pipeline, triggered by changes in `master` branch. It will install dependencies, run the Unit and Integration test and on success it will build and publish the artifact mentioned in [Build](#build) section.
+This project contains [.gitlab-ci.yml](.gitlab-ci.yml) file - it is just a example of pipeline made out of this image. Every task should be ran as `task.sh`. Parameters should be passed as a environment variables. Task itself must be passed in `task` variable, this one is only variable name in lowercase, all other must be UPPER_CASE.
 
 ## API docs
 
@@ -74,23 +37,58 @@ All the API calls are made corresponding with ServiceNow [REST API documentation
 
 - Apply SourceControl Changes
 > Apply changes from a remote source control to a specified local application
+> Parameters:
+> - task=SCAppy
+> - APP_SCOPE
+> - APP_SYS_ID
+> - BRANCH
 
 - Publish Application
 > Installs the specified application from the application repository onto the local instance
+> Parameters:
+> - task=AppPublish
+> - SCOPE
+> - SYS_ID
+> - DEV_NOTES
+> - VERSIONFORMAT=(exact|autodetect)
+> - VERSION
 
 - Install Application
 > Installs the specified application from the application repository onto the local instance
+> Parameters:
+> - task=AppInstall
+> - SCOPE 
+> - SYS_ID
+> - VERSION
 
 - Rollback App
 > Initiate a rollback of a specified application to a specified version.
+> Parameters:
+> - task=AppRollback
+> - SCOPE 
+> - SYS_ID
+> - VERSION
 
 - Add a plugin
 > Activate a desired plugin on ServiceNow instance
+> Parameters:
+> - task=PluginActivate
+> - PLUGINID
 
 - Rollback a plugin
 > Rollback a desired plugin on ServiceNow instance
+> Parameters:
+> - task=PluginRolback
+> - PLUGINID
 
 - Start Test Suite
 > Start a specified automated test suite. 
-
+> Parameters:
+> - task=TestRun
+> - BROWSER_NAME
+> - BROWSER_VERSION
+> - OS_NAME
+> - OS_VERSION
+> - TEST_SUITE_SYS_ID
+> - TEST_SUITE_NAME
 
