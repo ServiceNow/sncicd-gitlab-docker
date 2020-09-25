@@ -14,6 +14,7 @@
 
 Here you can find the sourcecode of ServiceNow's extension for the Gitlab CI pipelines.
 This extension covers only CI/CD subset of ServiceNow REST API and it aims to help people integrate both Continues Integration and Continues Delivery into Gitlab pipelines infrastructure.
+
 This is intended to be used with a pipeline .yml, such as https://gitlab.com/ServiceNow-DevX/sncicd-gitlab-pipeline.
 
 ## Docker
