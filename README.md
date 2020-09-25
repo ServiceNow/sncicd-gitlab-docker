@@ -20,9 +20,8 @@ This extension covers only CI/CD subset of ServiceNow REST API and it aims to he
 Before pushing the image onto Docker hub make sure you have done the login command to link it with your Docker hub account: `docker login` 
 
 ```shell script
-export DOCKER_IMAGE_NAME=[your docker image name here]
-docker build -t  $DOCKER_IMAGE_NAME.
-docker push $DOCKER_IMAGE_NAME:latest
+docker build . -t "servicenowdevx/sncicd-gitlab-docker"
+docker push servicenowdevx/sncicd-gitlab-docker:latest
 ```
 
 ## Usage
