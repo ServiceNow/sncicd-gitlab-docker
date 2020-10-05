@@ -1,4 +1,4 @@
-# ServiceNow CI/CD plugin for Gitlab CI pipelines
+# Source Repo for ServiceNow CI/CD Docker Image for Gitlab CI pipelines
 
 ## Contents
 
@@ -12,14 +12,15 @@
 
 ## Intro
 
-Here you can find the sourcecode of ServiceNow's extension for the Gitlab CI pipelines.
-This extension covers only CI/CD subset of ServiceNow REST API and it aims to help people integrate both Continues Integration and Continues Delivery into Gitlab pipelines infrastructure.
+This Docker image provides build steps for configuring CI/CD pipelines with Now Platform application development. 
 
-This is intended to be used with a pipeline .yml, such as https://gitlab.com/ServiceNow-DevX/sncicd-gitlab-pipeline.
+The build steps are API wrappers for the  [CI/CD APIs](https://developer.servicenow.com/dev.do#!/reference/api/paris/rest/cicd-api) first released with Orlando. They will currently work with the Orlando and Paris releases. 
+
+This is intended to be used with a pipeline .yml file, such as the example provided at our [GitLab repo](https://gitlab.com/ServiceNow-DevX/sncicd-gitlab-pipeline/-/blob/master/.gitlab-ci.yml).
 
 ## Docker
 
-Before pushing the image onto Docker hub make sure you have done the login command to link it with your Docker hub account: `docker login` 
+Before pushing the image onto Docker Hub, please make sure to link to your Docker account: `docker login` 
 
 ```shell script
 docker build . -t "servicenowdevx/sncicd-gitlab-docker"
