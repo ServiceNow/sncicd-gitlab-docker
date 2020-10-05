@@ -29,7 +29,18 @@ docker push servicenowdevx/sncicd-gitlab-docker:latest
 
 ## Usage
 
-This project contains [.gitlab-ci.yml](.gitlab-ci.yml) file - it is just a example of pipeline made out of this image. Every task should be ran as `task.sh`. Parameters should be passed as a environment variables. Task itself must be passed in `task` variable, this one is only variable name in lowercase, all other must be UPPER_CASE.
+1. [Link to Source Control](https://developer.servicenow.com/dev.do#!/learn/learning-plans/paris/new_to_servicenow/app_store_learnv2_devenvironment_paris_linking_an_application_to_source_control) for an application that has been created on your instance. 
+2. Add a new file named **.gitlab-ci.yml** in the root directory of the Git repo. This will be your pipeline in GitLab. 
+3. Copy and paste the contents of a pipeline template. We provide an example in this repo with the [.gitlab-ci.yml](.gitlab-ci.yml) file. 
+4. Configure your CICD variables by defining keys such as **SN_AUTH_DEV** and values in the format **username:password**.
+
+![CICD variables](https://gitlab.com/ServiceNow-DevX/sncicd-gitlab-pipeline/-/raw/master/README_images/cicdvariables.png)
+
+5. Depending on how you have your triggers for the pipeline setup, you can now run a build on every commit, PR, etc. 
+
+**Other Notes**
+
+Build steps are not independently named, and can be run as `task.sh` throughout your pipeline. To choose which build step to run, specify the `task` variable as a part of the variables section. Please note that the `task` variable must be in lowercase, while all other variables must be in UPPER_CASE. 
 
 ## API docs
 
