@@ -1,4 +1,4 @@
-# ServiceNow CI/CD Docker Image for Gitlab CI pipelines
+# ServiceNow CI/CD Docker Image for Gitlab CI/CD
 
 ## Contents
 
