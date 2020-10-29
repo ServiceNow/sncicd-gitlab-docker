@@ -12,7 +12,9 @@
 
 ## Intro
 
-This Docker image provides build steps for configuring CI/CD pipelines with Now Platform application development. 
+This Docker image provides build steps for configuring CI/CD pipelines with Now Platform application development. **Click on the below screenshot to see a video for how you can use this extension to get started faster.**
+
+[![Get Started with GitLab in 10 Minutes](https://gitlab.com/ServiceNow-DevX/sncicd-gitlab-pipeline/-/raw/master/README_images/youtube_link_GitLab.png)](https://www.youtube.com/watch?v=B_LSwYKE11s "Get Started with GitLab in 10 Minutes")
 
 The build steps are API wrappers for the  [CI/CD APIs](https://developer.servicenow.com/dev.do#!/reference/api/paris/rest/cicd-api) first released with Orlando. They will currently work with the Orlando and Paris releases. 
 
