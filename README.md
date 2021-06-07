@@ -59,7 +59,7 @@ In order to keep sensitive data like password safe, use protected variables (see
 - Apply SourceControl Changes
 > Apply changes from a remote source control to a specified local application
 > Parameters:
-> - task=SCAppy
+> - task=SCApply
 > - APP_SCOPE
 > - APP_SYS_ID
 > - BRANCH
