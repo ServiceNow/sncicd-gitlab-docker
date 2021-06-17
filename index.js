@@ -1,4 +1,4 @@
-const tasks = ['AppInstall', 'AppPublish', 'AppRollback', 'PluginActivate', 'PluginRollback', 'SCApply', 'TestRun'];
+const tasks = ['AppInstall', 'AppPublish', 'AppRollback', 'PluginActivate', 'PluginRollback', 'SCApply', 'TestRun', 'ScanInstance'];
 try {
     const taskName = process.env.task || '';
     const task = tasks.indexOf(taskName) === -1 ? () => Promise.reject('Task not found') : require('./lib/' + taskName),
