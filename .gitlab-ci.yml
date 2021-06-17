@@ -19,8 +19,8 @@ SCApply:
   stage: apply
   variables:
     task: SCApply
-    SNOWINSTANCE: "cicdgitlabappauthor.service-now.com"
-    SNOWAUTH: $SN_AUTH_DEV
+    NOWINSTANCE: "cicdgitlabappauthor.service-now.com"
+    NOWAUTH: $SN_AUTH_DEV
     APP_SCOPE: "x_sofse_cicd_gitla"
   script:
     - task.sh
@@ -29,8 +29,8 @@ AppPublish:
   stage: publish
   variables:
     task: AppPublish
-    SNOWINSTANCE: "cicdgitlabappauthor.service-now.com"
-    SNOWAUTH: $SN_AUTH_DEV
+    NOWINSTANCE: "cicdgitlabappauthor.service-now.com"
+    NOWAUTH: $SN_AUTH_DEV
     SCOPE: "x_sofse_cicd_gitla"
     VERSIONFORMAT: "autodetect"
     DEVNOTES: "Updated version"
@@ -43,8 +43,8 @@ AppInstall:
   stage: install
   variables:
     task: AppInstall
-    SNOWINSTANCE: "cicdgitlabappclient.service-now.com"
-    SNOWAUTH: $SN_AUTH_PROD
+    NOWINSTANCE: "cicdgitlabappclient.service-now.com"
+    NOWAUTH: $SN_AUTH_PROD
     SCOPE: "x_sofse_cicd_gitla"
     VERSION: $PUBLISHVERSION
   artifacts:
@@ -56,8 +56,8 @@ installPlugin:
   stage: installplugin
   variables:
     task: PluginActivate
-    SNOWINSTANCE: "cicdgitlabappclient.service-now.com"
-    SNOWAUTH: $SN_AUTH_PROD
+    NOWINSTANCE: "cicdgitlabappclient.service-now.com"
+    NOWAUTH: $SN_AUTH_PROD
     PLUGINID: "com.servicenow_now_calendar"
   script:
     - task.sh
@@ -66,8 +66,8 @@ testsuccess:
   stage: test
   variables:
     task: TestRun
-    SNOWINSTANCE: "cicdgitlabappclient.service-now.com"
-    SNOWAUTH: $SN_AUTH_PROD
+    NOWINSTANCE: "cicdgitlabappclient.service-now.com"
+    NOWAUTH: $SN_AUTH_PROD
     TEST_SUITE_SYS_ID: "0a383a65532023008cd9ddeeff7b1258"
   script:
     - echo 'TESTSTATE=started' >> $DOTENV_FILE
@@ -79,8 +79,8 @@ testfail:
   stage: test
   variables:
     task: TestRun
-    SNOWINSTANCE: "cicdgitlabappclient.service-now.com"
-    SNOWAUTH: $SN_AUTH_PROD
+    NOWINSTANCE: "cicdgitlabappclient.service-now.com"
+    NOWAUTH: $SN_AUTH_PROD
     TEST_SUITE_SYS_ID: "d24c05f01bd31c506ce4a82b234bcbf6"
   script:
     - echo 'TESTSTATE=started' >> $DOTENV_FILE
@@ -93,8 +93,8 @@ PluginRollback:
   stage: rollbackplugin
   variables:
     task: PluginRollback
-    SNOWINSTANCE: "cicdgitlabappclient.service-now.com"
-    SNOWAUTH: $SN_AUTH_PROD
+    NOWINSTANCE: "cicdgitlabappclient.service-now.com"
+    NOWAUTH: $SN_AUTH_PROD
     PLUGINID: "com.servicenow_now_calendar"
   script:
     - "[[ \"$TESTSTATE\" == \"started\" ]] && task.sh; echo Done"
@@ -103,8 +103,8 @@ AppRollback:
   stage: rollbackapp
   variables:
     task: AppRollback
-    SNOWINSTANCE: "cicdgitlabappclient.service-now.com"
-    SNOWAUTH: $SN_AUTH_PROD
+    NOWINSTANCE: "cicdgitlabappclient.service-now.com"
+    NOWAUTH: $SN_AUTH_PROD
     SCOPE: "x_sofse_cicd_gitla"
     ROLLBACKVERSION: $(rollbackVersion)
   script:

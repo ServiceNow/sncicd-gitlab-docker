@@ -52,7 +52,7 @@ All the API calls are made corresponding with ServiceNow [REST API documentation
 
 ### Required parameters
 
-Every task must have defined env variables `SNOWAUTH` and `SNOWINSTANCE` - auth in form of login:password and ServiceNow instance domain.
+Every task must have defined env variables `NOWAUTH` and `NOWINSTANCE` - auth in form of login:password and ServiceNow instance domain.
 
 In order to keep sensitive data like password safe, use protected variables (see `K8_SECRET_*` for GitLab) and pass them in pipeline without copy and paste passwords itself.
 
